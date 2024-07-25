@@ -28,20 +28,45 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getUsers(){
+    public ResponseEntity<List<User>> getAllActiveUsers(){
+        return new ResponseEntity<>(userService.getAllActiveUsers(), HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<User>> getAllUsers(){
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        System.out.println(id);
+    public ResponseEntity<User> getUserById(@PathVariable long id) {
         User user = userService.getUserById(id);
-        if (user == null){
+        if(user == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         else{
-            return new ResponseEntity<>(user ,HttpStatus.OK);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateUser(@PathVariable long id, @RequestBody User user){
+        User updatedUser = userService.updateUser(id, user);
+        if(updatedUser == null){
+            return new ResponseEntity<>("Failed to update", HttpStatus.BAD_REQUEST);
+        }
+        else{
+            return new ResponseEntity<>("Updated", HttpStatus.OK);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable long id){
+        boolean deleted = userService.softDeleteUser(id);
+        if(deleted) {
+            return new ResponseEntity<>("Deleted", HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+    }
 }
