@@ -22,7 +22,7 @@ const UserTable = ({ onUserSelect }) => {
     const deleteUser = async (userId) => {
         try {
             await axios.delete(`http://localhost:8081/api/users/${userId}`);
-            fetchUsers(); // Refresh the list after deletion
+            fetchUsers();
         } catch (error) {
             console.error('Error deleting user', error);
         }
@@ -64,7 +64,7 @@ const UserTable = ({ onUserSelect }) => {
         try {
             await axios.put(`http://localhost:8081/api/users/${userId}`, editFormData);
             setEditingUserId(null);
-            fetchUsers(); // Refresh the list after saving
+            fetchUsers();
         } catch (error) {
             console.error('Error saving user', error);
         }
@@ -75,10 +75,10 @@ const UserTable = ({ onUserSelect }) => {
     };
 
     return (
-        <div>
-            <h2>Users</h2>
-            <table className="table">
-                <thead>
+        <div className='container-fluid'>
+            <h2 className="my-4">Users</h2>
+            <table className="table table-striped table-hover w-100">
+                <thead className="thead-dark">
                     <tr>
                         <th>Id</th>
                         <th>Name</th>
@@ -90,7 +90,7 @@ const UserTable = ({ onUserSelect }) => {
                         <th>Street number</th>
                         <th>Password</th>
                         <th>Deleted</th>
-                        <th>Actions</th>
+                        <th style={{ width: '200px' }}>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -99,18 +99,18 @@ const UserTable = ({ onUserSelect }) => {
                             {editingUserId === user.id ? (
                                 <>
                                     <td>{user.id}</td>
-                                    <td><input type="text" name="name" value={editFormData.name} onChange={handleInputChange} /></td>
-                                    <td><input type="email" name="email" value={editFormData.email} onChange={handleInputChange} /></td>
-                                    <td><input type="text" name="address.country" value={editFormData.address.country} onChange={handleInputChange} /></td>
-                                    <td><input type="text" name="address.postCode" value={editFormData.address.postCode} onChange={handleInputChange} /></td>
-                                    <td><input type="text" name="address.city" value={editFormData.address.city} onChange={handleInputChange} /></td>
-                                    <td><input type="text" name="address.street" value={editFormData.address.street} onChange={handleInputChange} /></td>
-                                    <td><input type="text" name="address.houseNumber" value={editFormData.address.houseNumber} onChange={handleInputChange} /></td>
-                                    <td><input type="password" name="password" value={editFormData.password} onChange={handleInputChange} /></td>
+                                    <td><input type="text" name="name" className="form-control" value={editFormData.name} onChange={handleInputChange} /></td>
+                                    <td><input type="email" name="email" className="form-control" value={editFormData.email} onChange={handleInputChange} /></td>
+                                    <td><input type="text" name="address.country" className="form-control" value={editFormData.address.country} onChange={handleInputChange} /></td>
+                                    <td><input type="text" name="address.postCode" className="form-control" value={editFormData.address.postCode} onChange={handleInputChange} /></td>
+                                    <td><input type="text" name="address.city" className="form-control" value={editFormData.address.city} onChange={handleInputChange} /></td>
+                                    <td><input type="text" name="address.street" className="form-control" value={editFormData.address.street} onChange={handleInputChange} /></td>
+                                    <td><input type="text" name="address.houseNumber" className="form-control" value={editFormData.address.houseNumber} onChange={handleInputChange} /></td>
+                                    <td><input type="password" name="password" className="form-control" value={editFormData.password} onChange={handleInputChange} /></td>
                                     <td>{user.deleted.toString()}</td>
                                     <td>
-                                        <button className="btn btn-success" onClick={() => handleSaveClick(user.id)}>Save</button>
-                                        <button className="btn btn-secondary" onClick={handleCancelClick}>Cancel</button>
+                                        <button className="btn btn-success w-100" onClick={() => handleSaveClick(user.id)}>Save</button>
+                                        <button className="btn btn-secondary w-100" onClick={handleCancelClick}>Cancel</button>
                                     </td>
                                 </>
                             ) : (
@@ -126,9 +126,9 @@ const UserTable = ({ onUserSelect }) => {
                                     <td>{user.password}</td>
                                     <td>{user.deleted.toString()}</td>
                                     <td>
-                                        <button className="btn btn-primary" onClick={() => onUserSelect(user)}>View Tasks</button>
-                                        <button className="btn btn-secondary" onClick={() => handleEditClick(user)}>Edit</button>
-                                        <button className="btn btn-danger" onClick={() => deleteUser(user.id)} disabled={user.deleted}>Delete</button>
+                                        <button className="btn btn-primary w-100" onClick={() => onUserSelect(user)}>View Tasks</button>
+                                        <button className="btn btn-secondary w-100" onClick={() => handleEditClick(user)}>Edit</button>
+                                        <button className="btn btn-danger w-100" onClick={() => deleteUser(user.id)} disabled={user.deleted}>Delete</button>
                                     </td>
                                 </>
                             )}

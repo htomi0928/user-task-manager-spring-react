@@ -26,7 +26,7 @@ function App() {
   return (
     <div className="container">
       <UserTable onUserSelect={handleUserSelect} />
-      {selectedUser && <TaskTable tasks={selectedUser.tasks} fetchUsers={fetchUsers} />}
+      {selectedUser && <TaskTable tasks={selectedUser.tasks} fetchUsers={fetchUsers} selectedUserId={selectedUser.id} />}
     </div>
   );
 }
