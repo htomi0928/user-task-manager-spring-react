@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+// Define component
 const UserTable = ({ onUserSelect }) => {
+    // List of users
     const [users, setUsers] = useState([]);
+    // Currently edited user's id
     const [editingUserId, setEditingUserId] = useState(null);
+    // Edit request data
     const [editFormData, setEditFormData] = useState({});
 
+    // Function to fetch users when this component is called
     useEffect(() => {
         fetchUsers();
     }, []);
 
+    // Function to fetch users from the API
     const fetchUsers = async () => {
         try {
             const response = await axios.get('http://localhost:8081/api/users/all');
@@ -19,6 +25,7 @@ const UserTable = ({ onUserSelect }) => {
         }
     };
 
+    // Function to delete a user by Id
     const deleteUser = async (userId) => {
         try {
             await axios.delete(`http://localhost:8081/api/users/${userId}`);
@@ -28,6 +35,7 @@ const UserTable = ({ onUserSelect }) => {
         }
     };
 
+    // Function to handle the edit button click
     const handleEditClick = (user) => {
         setEditingUserId(user.id);
         setEditFormData({
@@ -43,23 +51,28 @@ const UserTable = ({ onUserSelect }) => {
             password: user.password
         });
     };
-
+    // Function to handle input changes in the edit form
     const handleInputChange = (e) => {
+        // Get name and value from the event  target
         const { name, value } = e.target;
+        // Check if the input field is a part of the address object
         if (name.includes('address.')) {
             const addressField = name.split('.')[1];
-            setEditFormData(prevState => ({
-                ...prevState,
+            // Update the edit form data state for the specific address field
+            setEditFormData(prevState => ({ 
+                ...prevState,  // Keep the previous value unchanged
                 address: {
                     ...prevState.address,
-                    [addressField]: value
+                    [addressField]: value // Update new address value
                 }
             }));
         } else {
+            // Update new value
             setEditFormData({ ...editFormData, [name]: value });
         }
     };
 
+    // Function to update user with the API
     const handleSaveClick = async (userId) => {
         try {
             await axios.put(`http://localhost:8081/api/users/${userId}`, editFormData);
@@ -70,6 +83,7 @@ const UserTable = ({ onUserSelect }) => {
         }
     };
 
+    // Function to close editing if canceleld
     const handleCancelClick = () => {
         setEditingUserId(null);
     };

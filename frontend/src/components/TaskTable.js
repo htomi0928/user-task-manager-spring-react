@@ -1,24 +1,30 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+// Define component
 const TaskTable = ({ tasks, fetchUsers, selectedUserId }) => {
+    // Currently edited task's id
     const [editTaskId, setEditTaskId] = useState(null);
+    // Edited request data
     const [editedTask, setEditedTask] = useState({ title: '', description: '' });
 
+    // Function to delete task
     const deleteTask = async (taskId) => {
         try {
             await axios.delete(`http://localhost:8081/api/tasks/${taskId}`);
-            fetchUsers(); 
+            fetchUsers();
         } catch (error) {
             console.error('Error deleting task', error);
         }
     };
 
+    // Function to handle  edit button click
     const handleEditClick = (task) => {
         setEditTaskId(task.id);
         setEditedTask({ title: task.title, description: task.description });
     };
 
+    // Function to update task with the API
     const handleSaveClick = async (taskId) => {
         try {
             const taskPayload = {
@@ -28,12 +34,13 @@ const TaskTable = ({ tasks, fetchUsers, selectedUserId }) => {
             };
             await axios.put(`http://localhost:8081/api/tasks/${taskId}`, taskPayload);
             setEditTaskId(null);
-            fetchUsers(); 
+            fetchUsers();
         } catch (error) {
             console.error('Error updating task', error);
         }
     };
 
+    // Function to handle changes in the edit input
     const handleChange = (e) => {
         const { name, value } = e.target;
         setEditedTask(prevState => ({
@@ -42,6 +49,7 @@ const TaskTable = ({ tasks, fetchUsers, selectedUserId }) => {
         }));
     };
 
+    // Function to close editing if canceleld
     const handleCancelClick = () => {
         setEditTaskId(null);
     }
