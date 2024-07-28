@@ -6,7 +6,17 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+/**
+ * Repository interface for managing {@link User} entities.
+ * Provides methods for performing CRUD operations on the User table.
+ */
 public interface UserRepository extends JpaRepository<User, Long> {
+
+    /**
+     * Custom query method to retrieve all users who are not marked as deleted.
+     *
+     * @return A list of active {@link User} entities (users who are not deleted).
+     */
     @Query("SELECT u FROM User u WHERE u.deleted = false")
     List<User> findAllActiveUsers();
 }
